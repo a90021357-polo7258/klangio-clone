@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
-// YouTube URL 검증 스키마
+// YouTube URL 검증 스키마 (Shorts 지원 포함)
 const youtubeSchema = z.object({
     url: z.string().url().refine((url) => {
         const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/)|youtu\.be\/)[\w-]+/
