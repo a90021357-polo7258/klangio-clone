@@ -4,7 +4,7 @@ import { z } from 'zod'
 // YouTube URL 검증 스키마
 const youtubeSchema = z.object({
     url: z.string().url().refine((url) => {
-        const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]+/
+        const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/)|youtu\.be\/)[\w-]+/
         return youtubeRegex.test(url)
     }, {
         message: '유효한 YouTube URL이 아닙니다.'
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
         const { url } = validation.data
 
         // YouTube 비디오 ID 추출
-        const videoIdMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/)
+        const videoIdMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([^&?\/]+)/)
         const videoId = videoIdMatch ? videoIdMatch[1] : null
 
         if (!videoId) {
