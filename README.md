@@ -1,4 +1,4 @@
-# Melodify (prev. Klang.io Clone)
+# Melodify (formerly Klang.io Clone) (prev. Klang.io Clone)
 
 AI 기반 음악 악보 변환 플랫폼 - Melodify 프로젝트
 
