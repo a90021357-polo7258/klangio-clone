@@ -13,6 +13,13 @@ interface UploadResult {
         title?: string
         status?: string
         message?: string
+        tempo?: number
+        notes_count?: number
+        notes?: Array<{
+            time: number
+            note: string
+            frequency: number
+        }>
     }
     error?: string
 }
@@ -227,6 +234,30 @@ export default function LiveDemo() {
                                             {result.data.fileName && <p>파일명: {result.data.fileName}</p>}
                                             {result.data.title && <p>제목: {result.data.title}</p>}
                                             {result.data.status && <p>상태: {result.data.status}</p>}
+
+                                            {/* 분석 결과 표시 */}
+                                            {result.data.tempo && (
+                                                <div className="mt-4 p-4 bg-white rounded border border-gray-200">
+                                                    <h4 className="font-bold text-lg mb-2 text-cyan-800">🎵 분석 결과</h4>
+                                                    <p>BPM (템포): <span className="font-mono font-bold">{Math.round(result.data.tempo)}</span></p>
+                                                    <p>총 음표 수: <span className="font-mono font-bold">{result.data.notes_count}</span>개</p>
+
+                                                    {result.data.notes && result.data.notes.length > 0 && (
+                                                        <div className="mt-3">
+                                                            <p className="font-semibold mb-1">첫 5개 음표:</p>
+                                                            <div className="flex gap-2 flex-wrap">
+                                                                {result.data.notes.slice(0, 5).map((note, idx) => (
+                                                                    <span key={idx} className="px-2 py-1 bg-cyan-100 text-cyan-800 rounded text-xs font-mono">
+                                                                        {note.note} ({note.time.toFixed(1)}s)
+                                                                    </span>
+                                                                ))}
+                                                                {result.data.notes.length > 5 && <span className="text-gray-400">...</span>}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+
                                             {result.data.message && <p className="mt-2 text-cyan-700 font-semibold">{result.data.message}</p>}
                                         </div>
                                     ) : (

@@ -3,31 +3,46 @@
 import { motion } from 'framer-motion'
 import { Play, Upload, Music } from 'lucide-react'
 
+import { useState, useEffect } from 'react'
+
 export default function HeroSection() {
+    const [notes, setNotes] = useState<any[]>([])
+
+    useEffect(() => {
+        setNotes([...Array(20)].map(() => ({
+            x: Math.random() * 100,
+            y: Math.random() * 100,
+            scale: Math.random() * 0.5 + 0.5,
+            yTarget: Math.random() * -20 - 10,
+            duration: Math.random() * 10 + 10,
+            size: Math.random() * 30 + 20
+        })))
+    }, [])
+
     return (
         <section className="relative min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 overflow-hidden">
             {/* 배경 애니메이션 - 음악 노트 */}
             <div className="absolute inset-0 overflow-hidden">
-                {[...Array(20)].map((_, i) => (
+                {notes.map((note, i) => (
                     <motion.div
                         key={i}
                         className="absolute text-cyan-500/20"
                         initial={{
-                            x: `${Math.random() * 100}%`,
-                            y: `${Math.random() * 100}%`,
-                            scale: Math.random() * 0.5 + 0.5
+                            x: `${note.x}%`,
+                            y: `${note.y}%`,
+                            scale: note.scale
                         }}
                         animate={{
-                            y: [null, `${Math.random() * -20 - 10}%`],
+                            y: [null, `${note.yTarget}%`],
                             opacity: [0.2, 0.5, 0.2]
                         }}
                         transition={{
-                            duration: Math.random() * 10 + 10,
+                            duration: note.duration,
                             repeat: Infinity,
                             ease: "linear"
                         }}
                     >
-                        <Music size={Math.random() * 30 + 20} />
+                        <Music size={note.size} />
                     </motion.div>
                 ))}
             </div>

@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
 
         // FastAPI AI 서버로 전달
         try {
-            const aiServerUrl = process.env.AI_SERVER_URL || 'http://localhost:8000'
+            const aiServerUrl = process.env.AI_SERVER_URL || 'http://127.0.0.1:8000'
 
             const aiFormData = new FormData()
             aiFormData.append('file', file)
@@ -65,7 +65,8 @@ export async function POST(request: NextRequest) {
             })
 
             if (!aiResponse.ok) {
-                throw new Error(`AI 서버 오류: ${aiResponse.status}`)
+                const errorData = await aiResponse.json().catch(() => ({ detail: null }));
+                throw new Error(errorData.detail || `AI 서버 오류: ${aiResponse.status}`);
             }
 
             const aiResult = await aiResponse.json()
@@ -96,7 +97,7 @@ export async function POST(request: NextRequest) {
                     fileType: file.type,
                     duration: 180,
                     status: 'processing',
-                    message: 'AI 서버에 연결할 수 없습니다. Mock 데이터를 반환합니다.'
+                    message: `AI 서버 연결 실패 (${(aiError as Error).message}). Mock 데이터를 반환합니다.`
                 }
             })
         }

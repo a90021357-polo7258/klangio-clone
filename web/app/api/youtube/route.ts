@@ -48,28 +48,32 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Mock 응답 데이터
-        const mockResponse = {
-            success: true,
-            data: {
-                videoId,
-                title: '샘플 YouTube 비디오',
-                duration: 240,
-                thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
-                status: 'processing',
-                message: '곧 AI 변환이 시작됩니다. 현재는 Mock 데이터입니다.'
-            }
+        // AI 서버로 요청 전달
+        const aiServerUrl = process.env.AI_SERVER_URL || 'http://127.0.0.1:8000'
+
+        const aiResponse = await fetch(`${aiServerUrl}/api/process-youtube`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url }),
+        })
+
+        if (!aiResponse.ok) {
+            const errorData = await aiResponse.json().catch(() => ({ detail: null }));
+            throw new Error(errorData.detail || `AI 서버 오류: ${aiResponse.status}`);
         }
 
-        // 실제 구현에서는 여기서 YouTube 오디오 추출 및 AI 처리 시작
-        return NextResponse.json(mockResponse)
+        const aiResult = await aiResponse.json()
+
+        return NextResponse.json(aiResult)
 
     } catch (error) {
         console.error('YouTube API 에러:', error)
         return NextResponse.json(
             {
                 success: false,
-                error: '서버 오류가 발생했습니다.'
+                error: (error as Error).message || '서버 오류가 발생했습니다.'
             },
             { status: 500 }
         )

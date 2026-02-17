@@ -8,3 +8,5 @@ python-dotenv>=1.0.0
 gunicorn>=21.2.0
 pydantic>=2.0.0
 # Fix Render build error (force update)
+scipy<1.13.0
+yt-dlp>=2023.11.16
