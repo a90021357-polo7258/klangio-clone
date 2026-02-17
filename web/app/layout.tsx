@@ -18,8 +18,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Melodify - AI Music Transcription",
-  description: "Convert audio to sheet music instantly with Melodify AI",
+  title: 'Melodify - AI 음악 악보 변환',
+  description: '오디오를 악보로 즉시 변환하세요. 피아노, 기타 등을 위한 최고의 AI 음악 전사 도구.',
 };
 
 export default function RootLayout({
