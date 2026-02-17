@@ -52,26 +52,55 @@ export async function POST(request: NextRequest) {
         // UUID 생성 (간단한 버전)
         const fileId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 
-        // Mock 응답 데이터
-        const mockResponse = {
-            success: true,
-            data: {
-                fileId,
-                fileName: file.name,
-                fileSize: file.size,
-                fileType: file.type,
-                duration: 180, // Mock: 3분
-                status: 'processing',
-                message: 'AI 변환이 시작되었습니다. 현재는 Mock 데이터입니다.'
+        // FastAPI AI 서버로 전달
+        try {
+            const aiServerUrl = process.env.AI_SERVER_URL || 'http://localhost:8000'
+
+            const aiFormData = new FormData()
+            aiFormData.append('file', file)
+
+            const aiResponse = await fetch(`${aiServerUrl}/api/analyze`, {
+                method: 'POST',
+                body: aiFormData,
+            })
+
+            if (!aiResponse.ok) {
+                throw new Error(`AI 서버 오류: ${aiResponse.status}`)
             }
+
+            const aiResult = await aiResponse.json()
+
+            // AI 분석 결과 반환
+            return NextResponse.json({
+                success: true,
+                data: {
+                    fileId,
+                    fileName: file.name,
+                    fileSize: file.size,
+                    fileType: file.type,
+                    ...aiResult.data,
+                    message: 'AI 분석이 완료되었습니다!'
+                }
+            })
+
+        } catch (aiError) {
+            console.error('AI 서버 연결 실패:', aiError)
+
+            // AI 서버 실패 시 Mock 응답 반환
+            return NextResponse.json({
+                success: true,
+                data: {
+                    fileId,
+                    fileName: file.name,
+                    fileSize: file.size,
+                    fileType: file.type,
+                    duration: 180,
+                    status: 'processing',
+                    message: 'AI 서버에 연결할 수 없습니다. Mock 데이터를 반환합니다.'
+                }
+            })
         }
 
-        // 실제 구현에서는 여기서:
-        // 1. 파일을 저장 (S3, 로컬 스토리지 등)
-        // 2. AI 처리 큐에 추가
-        // 3. 처리 상태 추적
-
-        return NextResponse.json(mockResponse)
 
     } catch (error) {
         console.error('파일 업로드 에러:', error)
