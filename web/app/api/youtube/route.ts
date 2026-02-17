@@ -3,11 +3,11 @@ import { z } from 'zod'
 
 // YouTube URL 검증 스키마 (Shorts 지원 포함)
 const youtubeSchema = z.object({
-    url: z.string().url().refine((url) => {
-        const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/)|youtu\.be\/)[\w-]+/
-        return youtubeRegex.test(url)
+    url: z.string().refine((url) => {
+        // 간단한 검증: youtube.com 또는 youtu.be 포함 여부
+        return url.includes('youtube.com/') || url.includes('youtu.be/')
     }, {
-        message: '유효한 YouTube URL이 아닙니다.'
+        message: '유효한 YouTube URL이 아닙니다. (youtube.com 또는 youtu.be 포함 필수)'
     })
 })
 
@@ -29,8 +29,13 @@ export async function POST(request: NextRequest) {
 
         const { url } = validation.data
 
-        // YouTube 비디오 ID 추출
-        const videoIdMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([^&?\/]+)/)
+        // YouTube 비디오 ID 추출 (다양한 형식 지원)
+        // 지원 형식:
+        // - youtube.com/watch?v=ID
+        // - youtube.com/shorts/ID
+        // - youtu.be/ID
+        // - youtube.com/embed/ID
+        const videoIdMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/|watch\?.+&v=))([^#&?]*)/)
         const videoId = videoIdMatch ? videoIdMatch[1] : null
 
         if (!videoId) {

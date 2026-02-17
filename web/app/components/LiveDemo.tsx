@@ -77,6 +77,15 @@ export default function LiveDemo() {
     const handleYoutubeSubmit = async () => {
         if (!youtubeUrl) return
 
+        // 클라이언트 사이드 검증
+        if (!youtubeUrl.includes('youtube.com/') && !youtubeUrl.includes('youtu.be/')) {
+            setResult({
+                success: false,
+                error: '올바른 YouTube 주소를 입력해주세요. (예: https://youtube.com/shorts/...)'
+            })
+            return
+        }
+
         setUploading(true)
         setResult(null)
 
@@ -128,8 +137,8 @@ export default function LiveDemo() {
                     {/* 드래그 앤 드롭 영역 */}
                     <div
                         className={`border-4 border-dashed rounded-xl p-12 text-center mb-6 transition-all ${dragActive
-                                ? 'border-cyan-500 bg-cyan-50'
-                                : 'border-gray-300 hover:border-cyan-400 hover:bg-gray-50'
+                            ? 'border-cyan-500 bg-cyan-50'
+                            : 'border-gray-300 hover:border-cyan-400 hover:bg-gray-50'
                             }`}
                         onDragEnter={handleDrag}
                         onDragLeave={handleDrag}
