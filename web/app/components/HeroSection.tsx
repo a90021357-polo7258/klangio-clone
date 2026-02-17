@@ -60,12 +60,12 @@ export default function HeroSection() {
                             AI 음악 전사
                         </h1>
                         <h2 className="text-3xl lg:text-4xl text-cyan-300 mb-6">
-                            klang.io로 오디오를 악보로 변환
+                            Melodify로 오디오를 악보로 변환
                         </h2>
                         <p className="text-xl text-gray-300 mb-8 leading-relaxed">
                             음악, MP3, YouTube에서 악보, TAB, MIDI, MusicXML로.
                             <br />
-                            <strong className="text-white">klang.io</strong>로 음악을 악보로 변환하세요.
+                            <strong className="text-white">Melodify</strong>로 음악을 악보로 변환하세요.
                             <br />
                             <span className="text-cyan-400">AI 음악 악보 변환</span>을 위한 선도적인 도구.
                         </p>

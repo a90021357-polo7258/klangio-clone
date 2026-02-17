@@ -9,7 +9,7 @@ export default function Footer() {
                     <div>
                         <div className="flex items-center gap-2 mb-4">
                             <Music className="w-8 h-8 text-cyan-400" />
-                            <span className="text-2xl font-bold text-white">Klang.io</span>
+                            <span className="text-2xl font-bold text-white">Melodify</span>
                         </div>
                         <p className="text-gray-400 leading-relaxed">
                             AI 기반 음악 악보 변환의 선도적인 플랫폼
@@ -55,7 +55,7 @@ export default function Footer() {
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         {/* 저작권 */}
                         <p className="text-gray-400 text-sm">
-                            © 2026 Klang.io. All rights reserved.
+                            © 2026 Melodify. All rights reserved.
                         </p>
 
                         {/* 소셜 미디어 */}

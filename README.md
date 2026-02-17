@@ -1,10 +1,10 @@
-# Klang.io Clone
+# Melodify (prev. Klang.io Clone)
 
-AI 기반 음악 악보 변환 플랫폼 - Klang.io 클론 프로젝트
+AI 기반 음악 악보 변환 플랫폼 - Melodify 프로젝트
 
 ## 🎵 프로젝트 소개
 
-Klang.io의 핵심 기능을 재현한 웹 애플리케이션입니다. 사용자가 오디오 파일이나 YouTube URL을 업로드하면 AI가 자동으로 악보로 변환합니다.
+Melodify는 사용자가 오디오 파일이나 YouTube URL을 업로드하면 AI가 자동으로 악보로 변환해주는 웹 애플리케이션입니다. (Klang.io의 핵심 기능을 재현)
 
 ## ✨ 주요 기능
 

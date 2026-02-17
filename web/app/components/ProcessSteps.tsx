@@ -12,8 +12,8 @@ const steps = [
     },
     {
         number: 2,
-        title: "Klangio AI가 음표를 식별",
-        description: "Klangio AI는 멜로디, 코드, 리듬을 자동으로 분석하고 음표를 감지합니다.",
+        title: "Melodify AI가 음표를 식별",
+        description: "Melodify AI는 멜로디, 코드, 리듬을 자동으로 분석하고 음표를 감지합니다.",
         icon: Brain
     },
     {

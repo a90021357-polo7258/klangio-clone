@@ -10,8 +10,8 @@ from pathlib import Path
 import yt_dlp
 
 app = FastAPI(
-    title="Klangio AI Server",
-    description="AI-powered audio to sheet music conversion",
+    title="Melodify AI Server",
+    description="AI-powered audio to sheet music conversion for Melodify",
     version="1.0.0"
 )
 
@@ -69,7 +69,7 @@ class YoutubeRequest(BaseModel):
 async def root():
     """서버 상태 확인"""
     return {
-        "message": "Klangio AI Server",
+        "message": "Melodify AI Server",
         "status": "running",
         "version": "1.0.0"
     }

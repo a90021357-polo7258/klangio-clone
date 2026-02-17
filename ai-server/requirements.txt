@@ -2,11 +2,11 @@ fastapi>=0.104.1
 uvicorn[standard]>=0.24.0
 librosa>=0.10.1
 music21>=9.1.0
-numpy>=1.26.0
+numpy==1.26.4
 python-multipart>=0.0.6
 python-dotenv>=1.0.0
 gunicorn>=21.2.0
 pydantic>=2.0.0
 # Fix Render build error (force update)
-scipy<1.13.0
+scipy==1.11.4
 yt-dlp>=2023.11.16
