@@ -54,8 +54,10 @@ export default function Footer() {
                 <div className="border-t border-gray-700 pt-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         {/* 저작권 */}
-                        <p className="text-gray-400 text-sm">
+                        <p className="text-gray-400 text-sm text-center md:text-left">
                             © 2026 Melodify. All rights reserved.
+                            <br />
+                            <span className="text-xs text-cyan-500 font-bold">v2.1 (Live Check: Melodify)</span>
                         </p>
 
                         {/* 소셜 미디어 */}
