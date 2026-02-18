@@ -54,37 +54,37 @@ const products = [
         icon: Piano,
         name: "Piano2Notes",
         description: "피아노 음악을 악보로 변환합니다.",
-        link: "#piano2notes"
+        link: "/piano"
     },
     {
         icon: Guitar,
         name: "Guitar2Tabs",
         description: "기타와 베이스를 TAB로 변환합니다.",
-        link: "#guitar2tabs"
+        link: "/guitar"
     },
     {
         icon: Mic2,
         name: "Sing2Notes",
         description: "노래를 악보로 변환합니다.",
-        link: "#sing2notes"
+        link: "/vocal"
     },
     {
         icon: Drum,
         name: "Drum2Notes",
         description: "드럼을 악보로 변환합니다.",
-        link: "#drum2notes"
+        link: "/drum"
     },
     {
         icon: Music2,
         name: "Violin2Notes",
         description: "현악기를 악보로 변환합니다.",
-        link: "#violin2notes"
+        link: "/violin"
     },
     {
         icon: Music2,
         name: "Wind2Notes",
         description: "금관/목관악기를 악보로 변환합니다.",
-        link: "#wind2notes"
+        link: "/wind"
     }
 ]
 

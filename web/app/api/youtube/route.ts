@@ -51,12 +51,15 @@ export async function POST(request: NextRequest) {
         // AI 서버로 요청 전달
         const aiServerUrl = process.env.AI_SERVER_URL || 'http://127.0.0.1:8000'
 
+        // instrument 파라미터 추출 (기본값: piano)
+        const instrument = body.instrument || 'piano'
+
         const aiResponse = await fetch(`${aiServerUrl}/api/process-youtube`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ url }),
+            body: JSON.stringify({ url, instrument }),
         })
 
         if (!aiResponse.ok) {

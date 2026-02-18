@@ -58,6 +58,9 @@ export async function POST(request: NextRequest) {
 
             const aiFormData = new FormData()
             aiFormData.append('file', file)
+            // instrument 파라미터 전달 (기본값: piano)
+            const instrument = formData.get('instrument') as string || 'piano'
+            aiFormData.append('instrument', instrument)
 
             const aiResponse = await fetch(`${aiServerUrl}/api/analyze`, {
                 method: 'POST',
@@ -80,7 +83,7 @@ export async function POST(request: NextRequest) {
                     fileSize: file.size,
                     fileType: file.type,
                     ...aiResult.data,
-                    message: 'AI 분석이 완료되었습니다!'
+                    message: aiResult.data.message || 'AI 분석이 완료되었습니다!'
                 }
             })
 

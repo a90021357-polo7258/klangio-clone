@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Upload, Link as LinkIcon, Loader2, CheckCircle, XCircle } from 'lucide-react'
+import { Upload, Link as LinkIcon, Loader2, CheckCircle, XCircle, FileDown, Music } from 'lucide-react'
 
 interface UploadResult {
     success: boolean
@@ -20,11 +20,24 @@ interface UploadResult {
             note: string
             frequency: number
         }>
+        instrument?: string
+        midi_base64?: string
+        xml_base64?: string
     }
     error?: string
 }
 
-export default function LiveDemo() {
+interface LiveDemoProps {
+    instrument?: string
+    title?: string
+    subtitle?: string
+}
+
+export default function LiveDemo({
+    instrument = 'general',
+    title = '음악을 악보로 변환하세요 - 직접 경험해보세요',
+    subtitle = '처음 20초는 무료로 변환하세요!'
+}: LiveDemoProps) {
     const [uploading, setUploading] = useState(false)
     const [youtubeUrl, setYoutubeUrl] = useState('')
     const [dragActive, setDragActive] = useState(false)
@@ -57,6 +70,7 @@ export default function LiveDemo() {
         try {
             const formData = new FormData()
             formData.append('file', file)
+            formData.append('instrument', instrument)
 
             const response = await fetch('/api/upload', {
                 method: 'POST',
@@ -84,7 +98,6 @@ export default function LiveDemo() {
     const handleYoutubeSubmit = async () => {
         if (!youtubeUrl) return
 
-        // 클라이언트 사이드 검증
         if (!youtubeUrl.includes('youtube.com/') && !youtubeUrl.includes('youtu.be/')) {
             setResult({
                 success: false,
@@ -102,7 +115,10 @@ export default function LiveDemo() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ url: youtubeUrl }),
+                body: JSON.stringify({
+                    url: youtubeUrl,
+                    instrument: instrument
+                }),
             })
 
             const data = await response.json()
@@ -127,10 +143,10 @@ export default function LiveDemo() {
                     transition={{ duration: 0.6 }}
                 >
                     <h2 className="text-4xl font-bold text-white text-center mb-4">
-                        음악을 악보로 변환하세요 - 직접 경험해보세요
+                        {title}
                     </h2>
                     <p className="text-xl text-cyan-300 text-center mb-12">
-                        처음 20초는 무료로 변환하세요!
+                        {subtitle}
                     </p>
                 </motion.div>
 
@@ -234,6 +250,7 @@ export default function LiveDemo() {
                                             {result.data.fileName && <p>파일명: {result.data.fileName}</p>}
                                             {result.data.title && <p>제목: {result.data.title}</p>}
                                             {result.data.status && <p>상태: {result.data.status}</p>}
+                                            {result.data.instrument && <p>모드: <span className="font-bold uppercase text-cyan-600">{result.data.instrument}</span></p>}
 
                                             {/* 분석 결과 표시 */}
                                             {result.data.tempo && (
@@ -254,6 +271,42 @@ export default function LiveDemo() {
                                                                 {result.data.notes.length > 5 && <span className="text-gray-400">...</span>}
                                                             </div>
                                                         </div>
+                                                    )}
+                                                </div>
+                                            )}
+
+                                            {/* 다운로드 버튼 영역 */}
+                                            {(result.data.midi_base64 || result.data.xml_base64) && (
+                                                <div className="mt-4 flex gap-3">
+                                                    {result.data.midi_base64 && (
+                                                        <button
+                                                            onClick={() => {
+                                                                if (!result.data?.midi_base64) return;
+                                                                const link = document.createElement('a');
+                                                                link.href = `data:audio/midi;base64,${result.data.midi_base64}`;
+                                                                link.download = `${result.data.fileName || 'music'}.mid`;
+                                                                link.click();
+                                                            }}
+                                                            className="flex-1 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-semibold flex items-center justify-center gap-2"
+                                                        >
+                                                            <Music className="w-5 h-5" />
+                                                            MIDI 다운로드
+                                                        </button>
+                                                    )}
+                                                    {result.data.xml_base64 && (
+                                                        <button
+                                                            onClick={() => {
+                                                                if (!result.data?.xml_base64) return;
+                                                                const link = document.createElement('a');
+                                                                link.href = `data:application/vnd.recordare.musicxml+xml;base64,${result.data.xml_base64}`;
+                                                                link.download = `${result.data.fileName || 'music'}.xml`;
+                                                                link.click();
+                                                            }}
+                                                            className="flex-1 py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors font-semibold flex items-center justify-center gap-2"
+                                                        >
+                                                            <FileDown className="w-5 h-5" />
+                                                            MusicXML 다운로드
+                                                        </button>
                                                     )}
                                                 </div>
                                             )}
